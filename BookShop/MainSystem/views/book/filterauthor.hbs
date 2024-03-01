@@ -1,0 +1,215 @@
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="dropdown mb-3">
+                <button id="authorBtn" class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    {{#if authorName}}
+                        {{authorName}}
+                    {{else}}
+                        Author
+                    {{/if}}
+                </button>
+                <ul class="dropdown-menu" style="max-height: 200px; overflow-y: auto;">
+                    {{#each authors}}
+                    <li><a class="dropdown-item" onclick="authorNameFunc('{{author}}')">{{author}}</a><br>
+                    </li>
+                    {{/each}}
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-9 d-flex">
+            <div class="container">
+                <div class="row mb-4" id="bookListContainer">
+                    {{#each books}}
+                    <div class="col-4 mb-4">
+                        <div class="card h-100" style="width: 14rem; margin-right: 12px;">
+                            <div class="container"
+                                style="width: 100%; height: 200px; background-color: #f5f5f5; align-items: center; justify-content: center;">
+                                <a href="/book/{{id}}/view">
+                                    <img src="/{{image}}" class="card-img-top" alt="{{name}}"
+                                        style="width: 100%; height: 100%; object-fit: contain;">
+                                </a>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title"><a style="color: #000000;" href="/book/{{id}}/view">{{name}}</a>
+                                </h5>
+                                <h6 class="card-title">{{author}}</h6>
+                                <div class="d-flex justify-content-between mt-auto">
+                                    <a class="card-text pointer">{{sold}} sold</a>
+                                    <a class="card-text font-weight-bold">{{price}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+                <nav aria-label="Page navigation example">
+                    <div class="pagination justify-content-center" id="paginationContainer">
+                        <li class="page-item">
+                            <a class="page-link custom-pagination-background custom-page-number"
+                                href="javascript:void(0);">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        {{#each (range 1 totalPages)}}
+                        <li class="page-item">
+                            <a class="page-link custom-pagination-background custom-page-number"
+                            href="javascript:void(0);">
+                                {{this}}
+                            </a>
+                        </li>
+                        {{/each}}
+                        <li class="page-item">
+                            <a class="page-link custom-pagination-background custom-page-number"
+                                href="javascript:void(0);">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function authorNameFunc(authorname, page = 1) {
+        document.getElementById('authorBtn').innerText = authorname;
+        const url = `/book/ajax/filterAuthor/${authorname}/page=${page}`;
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                // Xử lý dữ liệu trả về, ví dụ cập nhật danh sách sách trên trang
+                updateBookList(data.books);
+
+                // Cập nhật phân trang
+                updatePagination(data.totalPages, authorname, page);
+
+                // Cập nhật đường dẫn mà không load lại trang
+                const newUrl = `/book/filterAuthor/${authorname}/page=${page}`;
+                history.pushState({ page: page, authorname: authorname }, '', newUrl);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function updateBookList(books) {
+        const bookListContainer = document.getElementById('bookListContainer');
+
+        // Xóa tất cả các phần tử con trong container
+        while (bookListContainer.firstChild) {
+            bookListContainer.removeChild(bookListContainer.firstChild);
+        }
+
+        // Thêm sách mới vào container
+        books.forEach(book => {
+            const card = document.createElement('div');
+            card.className = 'col-4 mb-4';
+            card.innerHTML = `
+                <div class="card h-100" style="width: 14rem; margin-right: 12px;">
+                    <div class="container" style="width: 100%; height: 200px; background-color: #f5f5f5; align-items: center; justify-content: center;">
+                        <img src="/${book.image}" class="card-img-top" alt="${book.name}" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">${book.name}</h5>
+                        <h6 class="card-title">${book.author}</h6>
+                        <div class="d-flex justify-content-between mt-auto">
+                            <a class="card-text pointer">${book.sold} sold</a>
+                            <a class="card-text font-weight-bold">${book.price}</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            bookListContainer.appendChild(card);
+        });
+    }
+
+    function updatePagination(totalPages, authorName, currentPage) {
+        const paginationContainer = document.querySelector('.pagination');
+
+        // Xóa tất cả các phần tử con trong container
+        while (paginationContainer.firstChild) {
+            paginationContainer.removeChild(paginationContainer.firstChild);
+        }
+
+        // Thêm nút "Previous"
+        const prevLi = document.createElement('li');
+        prevLi.className = 'page-item';
+        const prevLink = document.createElement('a');
+        prevLink.className = 'page-link custom-pagination-background custom-page-number';
+        prevLink.href = `javascript:void(0);`;
+        prevLink.textContent = '«';
+        const prePage = subtractOne(currentPage)
+        prevLink.onclick = () => authorNameFunc(authorName, prePage);
+        prevLi.appendChild(prevLink);
+        paginationContainer.appendChild(prevLi);
+
+        // Thêm các nút phân trang mới vào container
+        for (let i = 1; i <= totalPages; i++) {
+            const li = document.createElement('li');
+            li.className = 'page-item';
+
+            const link = document.createElement('a');
+            link.className = 'page-link custom-pagination-background custom-page-number';
+            link.href = `javascript:void(0);`;
+            link.textContent = i;
+            link.onclick = () => authorNameFunc(authorName, i);
+
+            li.appendChild(link);
+            paginationContainer.appendChild(li);
+        }
+
+        // Thêm nút "Next"
+        const nextLi = document.createElement('li');
+        nextLi.className = 'page-item';
+        const nextLink = document.createElement('a');
+        nextLink.className = 'page-link custom-pagination-background custom-page-number';
+        nextLink.href = `javascript:void(0);`;
+        nextLink.textContent = '»';
+        nextLink.onclick = () => authorNameFunc(authorName, addinOne(currentPage, totalPages));
+        nextLi.appendChild(nextLink);
+        paginationContainer.appendChild(nextLi);
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        {{!-- const currentPage = '{{currentPage}}';
+        const totalPages = '{{totalPages}}'; --}}
+
+        document.querySelectorAll('.page-link').forEach(link => {
+            link.addEventListener('click', function (event) {
+                event.preventDefault();
+                const page = this.textContent.trim();
+                authorNameFunc('{{authorname}}', page);
+            });
+        });
+
+        {{!-- // Thêm xử lý sự kiện cho nút "Previous"
+        const prevButton = document.querySelector('.pagination .page-item:first-child .page-link');
+        prevButton.addEventListener('click', function (event) {
+            event.preventDefault();
+            authorNameFunc('{{authorname}}', subtractOne('{{currentPage}}'));
+        });
+
+        // Thêm xử lý sự kiện cho nút "Next"
+        const nextButton = document.querySelector('.pagination .page-item:last-child .page-link');
+        nextButton.addEventListener('click', function (event) {
+            event.preventDefault();
+            authorNameFunc('{{authorname}}', addinOne(currentPage, totalPages));
+        }); --}}
+    });
+
+    function subtractOne(currentPage) {
+        if (currentPage === 1) {
+            return currentPage;
+        }
+        return currentPage - 1;
+    }
+
+    function addinOne(currentPage, totalPages) {
+        if (currentPage === totalPages) {
+            return currentPage;
+        }
+        return currentPage + 1;
+    }
+
+</script>

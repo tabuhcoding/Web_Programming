@@ -1,0 +1,50 @@
+.app__body{
+    min-height: 100vh;
+}
+
+.footer-background {
+    background-color: #FAE6D4; 
+}
+
+.font-footer {
+    font-family: 'Hannari', sans-serif; 
+    font-size: 2em; 
+    margin-left: 10px;
+}
+
+.font-footer2 {
+    font-family: 'Hannari', sans-serif; 
+    font-size: 1em;
+    color: #897272;
+}
+
+.footer-height {
+    height: 200px;
+}
+
+.ordersum-font {
+    font-family: 'Roboto', sans-serif;
+    font-size: 22px; 
+    font-weight: bold;
+}
+
+.backgound-summary{
+    background-color: #f0f0f0;
+    padding: 10px;
+}
+
+.card-payment-list{
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 900px;
+}
+
+.summary-text1{
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px; 
+}
+
+.summary-text2{
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px; 
+    font-weight: bold;
+}

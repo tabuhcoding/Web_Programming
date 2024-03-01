@@ -1,0 +1,63 @@
+<h1 class="profile-title mt-5">My Profile</h1>
+<div class="container" style="width: 700px;">
+    <div class="card card-list mt-4 mb-5">
+        <form action="/profile/edit" method="post" enctype="application/json">
+            <div class="container mt-4"
+                style="width: 200px; height: 300px; align-items: center; justify-content: center;">
+                <img src="{{avatar}}" class="card-img-top" alt=""
+                    style="width: 100%; height: 100%; object-fit: contain;">
+            </div>
+            <div class="container mb-5 mt-3 " style="width: 650px;">
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-3">
+                        <p class="title-profile ml-5">Full Name:</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="checkout-font ml-5 name-profile" style="color: #000000;">{{fullname}}</p>
+                    </div>
+                </div>
+                <hr class="my-0" style="width: 500px;">
+                <div class="row mt-3">
+                    <div class="col-2"></div>
+                    <div class="col-4">
+                        <p class="title-profile ml-5">Birthday:</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="checkout-font" style="color: #000000;">{{birthday}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-4">
+                        <p class="title-profile ml-5">Email:</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="checkout-font" style="color: #000000;">{{email}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-4">
+                        <p class="title-profile ml-5">Gender:</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="checkout-font" style="color: #000000;">{{gender}}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-2"></div>
+                    <div class="col-4">
+                        <p class="title-profile ml-5">Address:</p>
+                    </div>
+                    <div class="col-6">
+                        <p class="checkout-font" style="color: #000000;">{{address}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="container text-center mb-5">
+                <button type="submit" class="btn btn-block btn-upload mx-auto">Update Profile</button>
+            </div>
+        </form>
+    </div>
+</div>

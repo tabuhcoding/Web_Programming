@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies Info</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>@import url('./style.css');</style>
+</head>
+<body >
+    <div id="app" :class="{'bg-secondary-subtle':!darkMode, 'text-bg-dark':darkMode}">
+        <div class="container" style="max-width: 1200;">
+            <!-- Header  -->
+            
+            <div class="row py-2">
+                <div :class="{'d-flex':true, 'justify-content-between':true, 'bg-body-tertiary':!darkMode, 'text-bg-secondary':darkMode}">
+                    <div class="align-self-center">
+                        <p class="fs-6">21120041</p>
+                    </div>
+                    <div class="align-self-center">
+                        <h4>Movies info</h4>
+                    </div>
+                    <div >
+                        <p class="float-end fs-6">21041</p><br>
+                        <div class="form-check form-switch float-end">
+                            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" v-model="darkMode">
+                            <label class="form-check-label" for="flexSwitchCheckDefault">Darkmode
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Narbar  -->
+            <div class="row py-2">
+                <div class="col-md">
+                    <nav :class="{'navbar':true, 'bg-body-tertiary':!darkMode, 'text-bg-secondary':darkMode}">
+                        <div class="container-fluid">
+                            <a :class="{'navbar-brand':true, 'fw-bold':true, 'text-white':darkMode}" @click="backToHome" style="cursor: pointer;">Home</a>
+                            
+                            <form class="d-flex" role="search" @submit.prevent="searching">
+                                <select v-model="selectedOption" class="form-select">
+                                    <option value="movie" selected>Movie</option>
+                                    <option value="actor">Actor</option>
+                                </select>
+                                <input class="form-control me-2" type="search" v-model="searchQuery"
+                                    placeholder="Search" aria-label="Search">
+                                <button class="btn btn-outline-success fw-bold">Search</button>
+                            </form>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Card Search -->
+
+            <div class="row py-2" v-if="isSearching&&!selectedMovie" >
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item" :class="{ disabled: !isPreviousButtonEnabled }">
+                            <a class="page-link" href="#" aria-label="Previous" @click="changePage(currentPage - 1)">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item" v-for="pageNumber in totalPages" :key="pageNumber"
+                            :class="{ active: currentPage === pageNumber }">
+                            <a class="page-link" href="#" @click="changePage(pageNumber)">{{ pageNumber }}</a>
+                        </li>
+                        <li class="page-item" :class="{ disabled: !isNextButtonEnabled }">
+                            <a class="page-link" href="#" aria-label="Next" @click="changePage(currentPage + 1)">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="col-md-4" v-for="index in displayedItems">
+                    <div class="card mb-3 h-100" @click="showMovieDetail(searchResult['items'][index],false)">
+                        <img :src="searchResult['items'][index].image" class="card-img-top h-100" alt="">
+                        <div class="card-body">
+                            <p class="card-text">{{searchResult['items'][index].fullTitle}}<br></p>
+                            <p class="card-text" v-if="searchResult['items'][index].ratings"> Rate: {{searchResult['items'][index].ratings['imDb']}}<br>
+                                Time: {{searchResult['items'][index].runtimeStr}}</p>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <!-- Detail Movie  -->
+            <div class="row py-2 " v-if="selectedMovie && !selectedActor">
+                <div :class="{'row':true, 'g-0':true, 'bg-body-secondary':!darkMode, 'text-bg-secondary':darkMode, 'position-relative':true}">
+                    <div class="col-md-6 mb-md-0 p-md-4">
+                      <img :src="selectedMovie.image" class="w-100" alt="">
+                    </div>
+                    <div class="col-md-6 p-4 ps-md-0">
+                      <h5 class="mt-0">{{selectedMovie.title}}</h5>
+                      <p>Year: {{selectedMovie.year}}</p>
+                        <div v-if="selectedMovie.detail">
+                            <p v-if="selectedMovie.detail.directors">Director: {{selectedMovie.detail.directors}}</p>
+                            <p v-if="selectedMovie.detail.sumary">Sumary: {{selectedMovie.detail.sumary}}</p>
+                            <p v-else>Sumary: No data</p>
+                            <p v-if="selectedMovie.detail.type">Type: {{selectedMovie.detail.type}}</p>
+                            <p v-else>Type: No data</p>
+                            <div v-if="selectedMovie.detail.actors"> 
+                                Actors: <span style="color: blue; text-decoration: underline;" v-for="actor in selectedMovie.detail.actors" @click="showActorDetail(actor.id)">{{actor.name}}, </span>
+                            </div>
+                            
+                        </div>
+                      <a href="#" @click="backToHome">Go back</a>
+                    </div>
+                </div>
+                <div v-if="selectedMovie.detail">
+                    <div v-if="selectedMovie.detail.reviews">
+                        <h3>Reviews:</h3>
+                        <div v-for="reviewer in selectedMovie.detail.reviews">
+                            <h5>Reviewer: {{reviewer.username}}</h5>
+                            <h5>Title: {{reviewer.title}}</h5>
+                            <b>Rate: {{reviewer.rate}}</b><br>
+                            Content: {{reviewer.content}}
+                            <hr>
+                        </div>
+                    </div>
+                    <p v-else>Reviews: No data</p>
+                </div>
+            </div>
+
+            <!-- Detail Actor  -->
+            <div class="row py-2 " v-if="selectedActor">
+                <div :class="{'row':true, 'g-0':true, 'bg-body-secondary':!darkMode, 'text-bg-secondary':darkMode, 'position-relative':true}">
+                    <div class="col-md-6 mb-md-0 p-md-4">
+                      <img :src="selectedActor.image" class="w-100" alt="">
+                    </div>
+                    <div class="col-md-6 p-4 ps-md-0">
+                        <h5 class="mt-0">{{selectedActor.name}}</h5>
+                        <p v-if="selectedActor.birthDate">Date Of Birth: {{selectedActor.birthDate}}</p>
+                        <p v-if="selectedActor.awards">Awards: {{selectedActor.awards}}</p>
+                        <p v-else>Awards: No data</p>
+                        <p v-if="selectedActor.summary">Summary: {{selectedActor.summary}}</p>
+                        <p v-else>Summary: No data</p>
+                    </div>
+                </div>
+                <h3>Movies:</h3>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item" :class="{ disabled: (selectedActor.pagination.nowp==1) }" @click="changePageActor(selectedActor,selectedActor.pagination.nowp -1 )">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item" v-for="index in selectedActor.pagination.pageNumbers" :key="index"
+                            :class="{ active: selectedActor.pagination.nowp === index }"
+                            @click="changePageActor(selectedActor,index)">
+                            <a class="page-link" href="#">{{ index }}</a>
+                        </li>
+                        <li class="page-item" :class="{ disabled: (selectedActor.pagination.nowp==selectedActor.pagination.total_p) }"  @click="changePageActor(selectedActor,selectedActor.pagination.nowp +1 )">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+
+                <div class="col-md-4" v-for="film in selectedActor.pagination.displayedFilms">
+                    <div class="card mb-3 h-100" @click="showMovieDetail(film.link_film,true)">
+                        <img :src="film.image" class="card-img-top h-100" alt="">
+                        <div class="card-body">
+                            <p class="card-text">{{film.title}}<br>
+                                Role: {{film.role}}</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Top Gross -->
+
+            <div class="row py-2" v-if="!isSearching&&!selectedMovie">
+
+
+                <div id="carouselExampleCaptions" class="carousel slide">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                        <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="4" aria-label="Slide 5"></button>
+
+                    </div>
+                    <div class="carousel-inner">
+                        <div v-for="(movie, index) in Top5News" :class="{ 'carousel-item': true, 'active': index === 0 }" @click="showMovieDetail(movie,true)">
+                            <img :src="movie.image" class="rounded mx-auto w-25 mh-100 d-block" alt="">
+                            <div class="carousel-caption d-none d-md-block">
+                                <p class="fw-semibold">Year: {{ movie.year }}<br>imDb: {{ movie.ratings.imDb }}<br>{{ movie.title }}</p>
+                            </div>
+                        </div>
+                    </div>
+                      
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+
+
+            </div>
+
+            <!-- Top Popular -->
+
+            <div class="row py-2" v-if="!isSearching&&!selectedMovie">
+                <h6>Most Popular</h6>
+
+                <div id="carouselForMostPopular" class="carousel slide container">
+                    <div class="row sticky-top carousel-indicators " style=" width: 80%; margin-left: 10%; text-align: right;">
+                        <div>  
+                            <button  type="button" data-bs-target="#carouselForMostPopular" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <button  type="button" data-bs-target="#carouselForMostPopular" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                            <button  type="button" data-bs-target="#carouselForMostPopular" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                            <button  type="button" data-bs-target="#carouselForMostPopular" data-bs-slide-to="3" aria-label="Slide 4"></button>                        
+                            <button  type="button" data-bs-target="#carouselForMostPopular" data-bs-slide-to="4" aria-label="Slide 5"></button>      
+                        </div>  
+                    </div>
+                    <div class="carousel-inner row" style="align-items: center;">
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselForMostPopular" style="width: 2%;" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+
+                        <div v-for='(movies, index) in TopPopular'>
+                            <div class="carousel-item" :class="(index === 0) && 'active'" data-bs-interval="3000" style="width: 97%; padding-left: 3%;">
+                                <div class="row">
+                                    <div class="col-4 p-0 movie-item position-relative" v-for="movie in movies" @click="showMovieDetail(movie, false)">
+                                        <img :src="movie.image" class="w-100 px-2">
+                                        <div class="movie-desc flex-column justify-content-center mx-2 px-2">
+                                            <span>Title: {{ movie.title }}</span><br>
+                                            <span>Rating: {{ movie.imDbRating }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselForMostPopular" style="width: 2%;" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                      
+                    
+                    
+                </div>
+            </div>
+
+            <!-- Top Rating -->
+
+            <div class="row py-2" v-if="!isSearching&&!selectedMovie">
+                <h6>Top Rating</h6>
+
+                <div id="carouselForTopRating" class="carousel slide container">
+                    <div class="row sticky-top carousel-indicators " style=" width: 80%; margin-left: 10%; text-align: right;">
+                        <div>  
+                            <button  type="button" data-bs-target="#carouselForTopRating" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <button  type="button" data-bs-target="#carouselForTopRating" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                            <button  type="button" data-bs-target="#carouselForTopRating" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                            <button  type="button" data-bs-target="#carouselForTopRating" data-bs-slide-to="3" aria-label="Slide 4"></button>                        
+                            <button  type="button" data-bs-target="#carouselForTopRating" data-bs-slide-to="4" aria-label="Slide 5"></button>      
+                        </div>  
+                    </div>
+                    <div class="carousel-inner row" style="align-items: center;">
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselForTopRating" style="width: 2%;" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+
+                        <!-- <div v-for="(movies, index) in TopRating" :class="{ 'carousel-item': true, 'active': index === 0, }">
+                            <div class="d-flex justify-content-center" style="width: 97%; padding-left: 3%;">
+                                <div class="col" v-for="movie in movies" @click="showMovieDetail(movie, false)">
+                                    <img :src="movie.image" class="d-block mx-auto w-100 mh-100" style="height: 200px; padding: 2px;" alt="">
+                                </div>
+                            </div>
+                        </div> -->
+                        
+                        <div v-for='(movies, index) in TopRating'>
+                            <div class="carousel-item" :class="(index === 0) && 'active'" data-bs-interval="3000" style="width: 97%; padding-left: 3%;">
+                                <div class="row">
+                                    <div class="col-4 p-0 movie-item position-relative" v-for="movie in movies" @click="showMovieDetail(movie, false)">
+                                        <img :src="movie.image" class="w-100 px-2">
+                                        <div class="movie-desc flex-column justify-content-center mx-2 px-2">
+                                            <span>Title: {{ movie.title }}</span><br>
+                                            <span>Rating: {{ movie.imDbRating }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                            
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselForTopRating" style="width: 2%;" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                      
+                    
+                    
+                </div>
+            </div>
+
+            <!-- Footer -->
+
+            <div class="row py-2" >
+                
+                <div :class="{'d-flex':true, 'justify-content-between':true, 'bg-body-tertiary':!darkMode, 'text-bg-secondary':darkMode}">
+                    <div class="align-self-center">
+                        <p class="fs-6">21120041 © Copyright</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./script.js" type="module"></script>
+    <!-- <script type="module">
+        import {getFetch} from './fetch.js';
+        getFetch('search/movie/the?per_page=6&page=1');
+        getFetch('get/top50/?per_page=15&page=1');
+    </script> -->
+</body>
+</html>

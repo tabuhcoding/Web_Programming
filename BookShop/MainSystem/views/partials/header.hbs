@@ -1,0 +1,170 @@
+
+<nav class="navbar navbar-light bg-light">
+  <div class="header__left pointer">
+    <img src="/Images/Book.png" alt="Logo" width="40" height="40">
+    {{#if user}}
+       {{#ifE role "admin"}}
+           <h3 class="mt-2" style="display: inline-block; margin-left: 10px;">AdminPage</h3>
+        {{/ifE}}
+
+        {{#ifE role "user"}}
+           <h3 class="mt-2" style="display: inline-block; margin-left: 10px;">SmartBook</h3>
+        {{/ifE}}
+    {{else}}
+       <h3 class="mt-2" style="display: inline-block; margin-left: 10px;">SmartBook</h3>
+    {{/if}}
+  </div>
+
+  {{#if user}}
+      {{#ifE role "user"}}
+         <div class="mx-auto order-0 ">
+            <form class="form-inline w-100" method="post" action="/book/search">
+            <input name="inputName" style="width:450px" class="form-control mr-sm-2 search__bar " type="search" placeholder="Search" aria-label="Search">
+
+            <div class="input-group-append">
+             <button type="submit" class="btn btn-outline-success my-2 my-sm-0 no-border">
+             <img src="/Images/search.png" alt="Logo" width="25" height="25">
+             </button>
+            </div>
+            </form>
+         </div>
+      {{/ifE}}
+  {{else}}
+  <div class="mx-auto order-0 ">
+    <form class="form-inline w-100" method="post" action="/book/search">
+      <input name="inputName" style="width:450px" class="form-control mr-sm-2 search__bar " type="search" placeholder="Search" aria-label="Search">
+
+      <div class="input-group-append">
+        <button type="submit" class="btn btn-outline-success my-2 my-sm-0 no-border">
+          <img src="/Images/search.png" alt="Logo" width="25" height="25">
+        </button>
+      </div>
+    </form>
+  </div>
+  {{/if}}
+
+  <div class="header__right order-2">
+    <img  id="cartImage" class="mr-2 pointer" src="/Images/cart.png" alt="Logo" width="30" height="30">
+    {{#if user}}
+      {{#ifE role "admin"}}
+        <button type="button" class="btn btn-warning btn-signin"><a style="color: #ffffff;" href="/smartpay">SmartPay</a></button>
+        <button type="button" class="btn btn-warning btn-signin"><a style="color: #ffffff;" href="/account/signout">Sign Out</a></button>
+      {{/ifE}}
+      {{#ifE role "user"}}
+        <img src="{{avatar}}" alt="User Avatar" class="rounded-circle mr-3 ml-2" width="40" height="40">
+        <button type="button" class="btn btn-warning btn-signin"><a style="color: #ffffff;" href="/smartpay">SmartPay</a></button>
+        <button type="button" class="btn btn-warning btn-signin"><a style="color: #ffffff;" href="/account/signout">Sign Out</a></button>
+      {{/ifE}}
+    {{else}}
+      <button type="button" class="btn btn-warning btn-signin mr-2"><a style="color: #ffffff;" href="/account/signin">Sign In</a></button>
+      <button type="button" class="btn btn-warning btn-signin"><a style="color: #ffffff;" href="/account/signup">Sign Up</a></button>
+    {{/if}}
+  </div>
+</nav>
+
+
+
+<nav class="navbar navbar-expand-lg" style="background-color: #FAE6D4;">
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav mx-auto">
+      {{#if user}}
+       {{#ifE role "admin"}}
+        <a class="nav-item nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-item nav-link" href="/admin/showProducts">Products</a>
+        <a class="nav-item nav-link" href="/admin/category">Categories</a>
+        <a class="nav-item nav-link" href="/user-management">Users</a>
+        <a class="nav-item nav-link" href="/order-management">Orders</a>
+        <a class="nav-item nav-link" href="/admin/revenue">Revenue</a>
+        <a class="nav-item nav-link" href="/coupon-management">Coupons</a>
+        {{/ifE}}
+
+        {{#ifE role "user"}}
+        <a class="nav-item nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-item nav-link" href="/category">Category</a>
+       <a class="nav-item nav-link" href="/orderHistory">Order History</a>
+       <a class="nav-item nav-link" href="/profile">Profile</a>
+        {{/ifE}}
+     {{else}}
+        <a class="nav-item nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-item nav-link" href="/category">Category</a>
+        <a class="nav-item nav-link" href="/orderHistory">Order History</a>
+       <a class="nav-item nav-link" href="/profile">Profile</a>
+    {{/if}}
+    </div>
+  </div>
+
+  <div style="float: right;" class="header__right order-2">
+        <div class="form-check form-switch">
+         <input class="form-check-input" type="checkbox" role="switch" id="darkModeToggle" onclick="toggleDarkMode()">
+         <label class="form-check-label" for="darkModeToggle">
+         <i class="fas fa-sun"></i>
+         </label>
+       </div>
+     </div>
+</nav>
+
+<script>
+  console.log(`{{admin.fullname}}`);
+  document.getElementById('cartImage').addEventListener('click', function(){
+    const destinationURL = '/cart';
+    window.location.href = destinationURL;
+  });
+  document.querySelector('.header__left.pointer').addEventListener('click', function() {
+    window.location.href = '/';
+  });
+
+  function setCookie(name, value, days) {
+    const expires = new Date();
+    expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+    document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
+  }
+
+  function getCookie(name) {
+    const keyValue = document.cookie.match(`(^|;) ?${name}=([^;]*)(;|$)`);
+    return keyValue ? keyValue[2] : null;
+  }
+
+
+  function toggleDarkMode() {
+    const body = document.body;
+    body.classList.toggle('dark-mode');
+
+    // Chọn phần tử label để thay đổi nội dung của nó
+    const label = document.querySelector('.form-check-label');
+
+    // Kiểm tra xem có dark-mode đang được bật hay không
+    const isDarkMode = body.classList.contains('dark-mode');
+
+    // Thay đổi nội dung của label dựa trên chế độ sáng hay tối
+    label.innerHTML = isDarkMode
+      ? '<i class="fas fa-moon"></i>' // Nếu dark-mode đang bật, hiển thị mặt trăng
+      : '<i class="fas fa-sun"></i>'; // Nếu dark-mode đang tắt, hiển thị mặt trời
+  }
+
+  const isDarkModeEnabled = getCookie('darkMode') === 'enabled';
+  const body = document.body;
+  body.classList.toggle('dark-mode', isDarkModeEnabled);
+
+  const darkModeToggle = document.getElementById('darkModeToggle');
+  darkModeToggle.checked = isDarkModeEnabled;
+
+  // Chọn phần tử label để thay đổi nội dung của nó
+  const label = document.querySelector('.form-check-label');
+
+  // Kiểm tra xem dark-mode có đang được bật hay không
+  const isDarkMode = document.body.classList.contains('dark-mode');
+
+  // Thay đổi nội dung của label dựa trên chế độ sáng hay tối
+  if (isDarkMode) {
+    label.innerHTML = '<i class="fas fa-moon"></i>'; // Nếu dark-mode đang bật, hiển thị mặt trăng
+  } else {
+    label.innerHTML = '<i class="fas fa-sun"></i>'; // Nếu dark-mode đang tắt, hiển thị mặt trời
+  }
+
+  darkModeToggle.addEventListener('change', function() {
+    const isChecked = this.checked;
+    body.classList.toggle('dark-mode', isChecked);
+    setCookie('darkMode', isChecked ? 'enabled' : 'disabled', 365); // Lưu cookie trong 365 ngày
+  });
+
+</script>

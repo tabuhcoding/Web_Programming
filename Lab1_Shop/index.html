@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng kí đơn hàng</title>
+    <style>@import url(./style.css);</style>
+</head>
+<body>
+    <div class="container">
+            <div class="header">
+                <h2>Bài tập 1 - 21120041</h2>
+                <div class="nav">
+                    <ul type = "none">
+                        <li id="menu1" name="menu">
+                            Menu 1
+                        </li>
+                        <li id="menu2" name="menu">
+                            Menu 2
+                        </li >
+                        <li id="menu3" name="menu">
+                            Menu 3
+                        </li>
+                        <li id="menu4" name="menu">
+                            Menu 4
+                        </li>
+                        <li id="menu5" name="menu">
+                            Menu 5
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div class="body">
+                <div class="side">
+                    <div class="news">
+                        <div class = "news-header opened" id="new1">
+                            <button class="openButton" onclick="openNews(this);">
+                            <!-- &#9660; -->
+                            &#x2193;
+                            </button>
+                            NEWS 01
+                            <button class="switchButton">
+                            &#x2195;
+                            </button>
+                        </div>
+                        <div class = "news-data" id="data1" >Lorem ipsum dolor sit, amet consectetur 
+                            adipisicing elit. Officiis quaerat maxime vitae 
+                            nam optio corporis molestias cum, magnam ab? 
+                            Sequi amet a quisquam, error delectus saepe quia 
+                            laborum illo natus</div>
+                    </div>
+                    <div class="news">
+                        <div class = "news-header closed" id="new2">
+                            <button class="openButton" onclick="openNews(this);">
+                                <!-- &#9660; -->
+                                &#9658;
+                                </button>
+                                NEWS 02
+                                <button class="switchButton">
+                                &#x2195;
+                                </button>
+                            </div>
+                        <div class = "news-data" id="data2" style="display: none;">Lorem ipsum dolor sit, amet consectetur 
+                            adipisicing elit. Officiis quaerat maxime vitae 
+                            nam optio corporis molestias cum, magnam ab? 
+                            Sequi amet a quisquam, error delectus saepe quia 
+                            laborum illo natus</div>
+                    </div>
+                    <div class="news">
+                        <div class = "news-header opened" id="new3">
+                            <button class="openButton" onclick="openNews(this);">
+                                <!-- &#9660; -->
+                                &#x2193;
+                                </button>
+                                NEWS 03
+                                <button class="switchButton">
+                                &#x2195;
+                                </button>
+                        </div>
+                        <div class = "news-data" id="data3" >Lorem ipsum dolor sit, amet consectetur 
+                            adipisicing elit. Officiis quaerat maxime vitae 
+                            nam optio corporis molestias cum, magnam ab? 
+                            Sequi amet a quisquam, error delectus saepe quia 
+                            laborum illo natus</div>
+                    </div>
+                    <div class="news">
+                        <div class = "news-header closed" id="new4">
+                            <button class="openButton"  onclick="openNews(this);">
+                                <!-- &#9660; -->
+                                &#9658;
+                                </button>
+                                NEWS 04
+                                <button class="switchButton">
+                                &#x2195;
+                                </button>
+                        </div>
+                        <div class = "news-data" id="data4"  style="display: none;">Lorem ipsum dolor sit, amet consectetur 
+                            adipisicing elit. Officiis quaerat maxime vitae 
+                            nam optio corporis molestias cum, magnam ab? 
+                            Sequi amet a quisquam, error delectus saepe quia 
+                            laborum illo natus</div>
+                    </div>
+                </div>
+                <div class="main">
+                    <div class="header-main"><b>ĐĂNG KÝ ĐƠN HÀNG</b></div>
+                    <hr>
+                    <table class="form">
+                        <tr>
+                            <td><label for="name">Họ và tên:</label></td>
+                            <td>
+                                <input type = "text" id="name" name="name" class="input">
+                                <div id="name-message" class="error-message"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for ="address">Địa chỉ:</label><br></td>
+                            <td><input type = "text" id="address" name="address" class="input">
+                                <div id="address-message" class="error-message"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for = "phone">Điện thoại:</label></td>
+                            <td>
+                                <input type = "text" id="phone" name="phone" class="input">
+                                <div id="phone-message" class="error-message"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for ="sex">Giới tính:</label></td>
+                            <td style="text-align: left;" id="sex">
+                                <input type = "radio" id="nam" name="sex" value="Nam">
+                                <label for = "nam">Nam</label>
+                                <input type = "radio" id="nu" name="sex" value="Nữ">
+                                <label for = "nu">Nữ</label><br>
+                                <div id="sex-message" class="error-message"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="date">Ngày giao hàng:</label></td>
+                            <td><input type = "date" id="date" name="date" class="input">
+                                <div id="date-message" class="error-message"></div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="mail">Email:</label></td>
+                            <td><input type = "text" id = "mail" name = "mail" class="input">
+                                <div id="mail-message" class="error-message"></div>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="shop">
+                        <div>
+                            <div class="title-list"><b>Danh sách sản phẩm</b></div>
+                            <div class="listProduct" id="shopItems">
+                                    <div class="product">
+                                        <div class="product-icon">📱</div>
+                                        <div class="nameProduct">Iphone 14 Pro Max 256GB</div>
+                                        <div style="color:orangered;">$1349</div>
+                                    </div>
+                                    <div class="product">
+                                        <div class="product-icon">📱</div>
+                                        <div class="nameProduct">Samsung S23 Ultra 256GB</div>
+                                        <div style="color:orangered;">$1349</div>
+                                    </div>
+                                    <div class="product">
+                                        <div class="product-icon">📱</div>
+                                        <div class="nameProduct">IPad Pro M1 11" 128GB</div>
+                                        <div style="color:orangered;">$1349</div>
+                                    </div>
+                                    <div class="product">
+                                        <div class="product-icon">💻</div>
+                                        <div class="nameProduct">AUS ZenBook UX505</div>
+                                        <div style="color:orangered;">$1349</div>
+                                    </div>
+                                    <div class="product">
+                                        <div class="product-icon">💻</div>
+                                        <div class="nameProduct">LG Gram 2023 17"</div>
+                                        <div style="color:orangered;">$1349</div>
+                                    </div>
+                                    <div class="product">
+                                        <div class="product-icon">💻</div>
+                                        <div class="nameProduct">DELL XPS 13 9315 (2022)</div>
+                                        <div style="color:orangered;">$1349</div>
+                                    </div>
+                                    
+                            </div>
+                        </div>
+                        <div class="shop-button">
+                            <button class="button" onclick="moveButton('buy');">></button>
+                            <button class="button" onclick="moveAll('buy');">>></button>
+                            <button class="button" onclick="moveButton('back');">&lt;</button>
+                            <button class="button" onclick="moveAll('back');">&lt;&lt;</button>
+
+                        </div>
+                        <div>
+                            <div class="title-list" style="text-align: left;"><b>Sản phẩm đã chọn</b></div>
+                            <div class="error-message" id="list-message"></div>
+                            <div class="listProduct" id="buyItems" style="background-color: rgb(220, 248, 255);">
+                                <div class="product">
+                                    <div class="product-icon">📱</div>
+                                    <div class="nameProduct">IPhone 14 Pro 512GB"</div>
+                                    <div style="color:orangered;">$1349</div>
+                                </div>
+                                <div class="product">
+                                    <div class="product-icon">💻</div>
+                                    <div class="nameProduct">Macbook Pro 16" 2023"</div>
+                                    <div style="color:orangered;">$1349</div>
+                                </div>
+                                <div class="product">
+                                    <div class="product-icon">💻</div>
+                                    <div class="nameProduct">LG Gram 2021 14"</div>
+                                    <div style="color:orangered;">$1349</div>
+                                </div>
+                                <div class="product">
+                                    <div class="product-icon">📱</div>
+                                    <div class="nameProduct" >IPad Pro M2 12.9" 256GB</div>
+                                    <div style="color:orangered;">$1349</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: center; padding-top: 5px;">
+                        <button class="button" style="width: 10%;" onclick="addRegist();">Đăng ký</button>
+                        <button class="button" style="width: 10%;" onclick="deleteAll();">Xóa hết</button>
+                    </div>
+                <hr>
+                <table class="cart-table" id="listCustomer">
+                    <tr class="header-table">
+                        <th>Họ tên</th>
+                        <th>Giới tính</th>
+                        <th>Địa chỉ</th>
+                        <th>Ngày giao</th>
+                        <th>Sản phẩm</th>
+                    </tr>
+                    <tr>
+                        <td>Nguyễn Thị A</td>
+                        <td>Nữ</td>
+                        <td>TP.Hồ Chí Minh</td>
+                        <td>07/10/2023</td>
+                        <td>LG Gram 2023 17"; IPad Pro M1 11" 128GB</td>
+
+                    </tr>
+                    <tr>
+                        <td>Trần Thị C</td>
+                        <td>Nữ</td>
+                        <td>TP.Cần Thơ</td>
+                        <td>01/11/2023</td>
+                        <td>Iphone 14 Pro Max 256GB</td>
+
+                    </tr>
+                    <tr>
+                        <td>Lê Văn E</td>
+                        <td>Nam</td>
+                        <td>TP.Hà Nội</td>
+                        <td>14/12/2023</td>
+                        <td>AUS ZenBook UX505; Samsung S23 Ultra 256GB; IPad Pro M1 11" 128GB</td>
+
+                    </tr>
+                    <tr>
+                        <td>Phạm Thị D</td>
+                        <td>Nữ</td>
+                        <td>TP.Hồ Chí Minh</td>
+                        <td>25/10/2023</td>
+                        <td>DELL XPS 13 9315 (2022)</td>
+
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <hr style="clear:both">
+        <div>
+            <div class="footer">
+                <div style="text-align: right;">Copyright © ThaiBao</div>
+                <div>
+                    <ul type = "none" class="menu-footer">
+                        <li id="fmenu1" name="menu">
+                            Menu 1
+                        </li>
+                        <li id="fmenu2" name="menu">
+                            Menu 2
+                        </li>
+                        <li id="fmenu3" name="menu">
+                            Menu 3
+                        </li>
+                        <li id="fmenu4" name="menu">
+                            Menu 4
+                        </li>
+                        <li id="fmenu5" name="menu">
+                            Menu 5
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="./script.js"></script>
+</body>
+</html>

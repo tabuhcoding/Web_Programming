@@ -1,0 +1,40 @@
+/* .image_notHover{
+    height: 200px; padding: 2px;
+}
+.image_hover{
+    height: 250px;   
+} */
+
+.carousel-inner .movie-item {
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+}
+
+.carousel-inner .movie-item img {
+    height: 200px;
+    object-fit: fill;
+    width: 100%;
+}
+
+.carousel-inner .movie-item .movie-desc {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.36); 
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease; 
+}
+
+.carousel-inner .movie-item:hover .movie-desc {
+    opacity: 1;
+    z-index: 1;
+}
+.carousel-inner .movie-item:hover img{
+    z-index: 99;
+    transform: scale(1.3);
+}

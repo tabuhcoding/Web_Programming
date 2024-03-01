@@ -1,0 +1,385 @@
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card category-bg">
+                <div class="card-body">
+                    <h1 class="roboto-font-size-18 text-center" style="color: #000000;">Category</h1>
+                    <hr class="black-hr">
+                    {{#each catgories}}
+                    <a onclick="categoryType('{{name}}')" class="roboto-font-size-18 pointer" style="color: #000000;">{{name}}</a><br>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 d-flex">
+            <div class="container">
+                <div class="row mb-4" id="bookListContainer">
+                    {{#each books}}
+                    <div class="col-4 mb-4">
+                        <div class="card h-100" style="width: 14rem; margin-right: 12px;">
+                            <div class="container"
+                                style="width: 100%; height: 200px; background-color: #f5f5f5; align-items: center; justify-content: center;">
+                                <a href="/book/{{id}}/view">
+                                    <img src="/{{image}}" class="card-img-top" alt="{{name}}"
+                                        style="width: 100%; height: 100%; object-fit: contain;">
+                                </a>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title"><a style="color: #000000;" href="/book/{{id}}/view">{{name}}</a>
+                                </h5>
+                                <h6 class="card-title" style="color: #000000;">{{author}}</h6>
+                                <div class="d-flex justify-content-between mt-auto">
+                                    <a class="card-text pointer" style="color: #000000;">{{sold}} sold</a>
+                                    <a class="card-text font-weight-bold" style="color: #000000;">{{price}}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+                <nav aria-label="Page navigation example" class="mb-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item">
+                            <a class="page-link custom-pagination-background custom-page-number"
+                                href="javascript:void(0);">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        {{#each (range 1 4)}}
+                        <li class="page-item">
+                            <a class="page-link custom-pagination-background custom-page-number"
+                                href="javascript:void(0);" onclick="categoryType('{{cateName}}', {{this}})">
+                                {{this}}
+                            </a>
+                        </li>
+                        {{/each}}
+                        <a class="custom-pagination-background custom-page-number"> <span class="mr-2 ml-2" style="color: #000000;">... </span></a>   
+                        <li class="page-item">
+                            <a class="page-link custom-pagination-background custom-page-number"
+                                href="javascript:void(0);" onclick="categoryType('{{cateName}}', {{totalPages}})">
+                                {{totalPages}}
+                            </a>
+                        </li>          
+                        <li class="page-item">
+                            <a class="page-link custom-pagination-background custom-page-number"
+                                href="javascript:void(0);">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <div class="col-1">
+            <div class="ml-auto">
+                <div class="dropdown mb-3">
+                    <button id="authorBtn" class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        {{#if authorName}}
+                            {{authorName}}
+                        {{else}}
+                            Author
+                        {{/if}}
+                    </button>
+                    <ul class="dropdown-menu" style="max-height: 200px; overflow-y: auto;">
+                        {{#each authors}}
+                        <li><a class="dropdown-item" onclick="authorNameFunc('{{author}}')">{{author}}</a><br>
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+                <div class="dropdown input-group">
+                    <button id="priceRangeBtn" class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        {{!-- {{priceRangeLabel priceRange}} --}}
+                        {{#if priceRange}}
+                            {{priceRangeLabel priceRange}}
+                        {{else}}
+                            Price range
+                        {{/if}}
+                    </button>
+                    <ul class="dropdown-menu" style="max-height: 200px; overflow-y: auto;">
+                        <li><a class="dropdown-item" onclick="priceRangeFunc('0')">All</a><br></li>
+                        <li><a class="dropdown-item" onclick="priceRangeFunc('1')">0-10.00</a><br></li>
+                        <li><a class="dropdown-item" onclick="priceRangeFunc('2')">10.00-20.00</a><br></li>
+                        <li><a class="dropdown-item" onclick="priceRangeFunc('3')">20.00-30.00</a><br></li>
+                        <li><a class="dropdown-item" onclick="priceRangeFunc('4')">30.00-40.00</a><br></li>
+                        <li><a class="dropdown-item" onclick="priceRangeFunc('5')">More than 40.00</a><br></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function priceRangeFunc(priceRange, page = 1) {
+        const url = `/book/ajax/filterPrice/${priceRange}/page=${page}`;
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                // Xử lý dữ liệu trả về, ví dụ cập nhật danh sách sách trên trang
+                updateBookList(data.books);
+
+                // Cập nhật phân trang
+                updatePaginationPrice(data.totalPages, priceRange, page);
+
+                // Cập nhật đường dẫn mà không load lại trang
+                const newUrl = `/book/filterPrice/${priceRange}/page=${page}`;
+                history.pushState({ page: page, priceRange: priceRange }, '', newUrl);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function authorNameFunc(authorname, page = 1) {
+        document.getElementById('authorBtn').innerText = authorname;
+        const url = `/book/ajax/filterAuthor/${authorname}/page=${page}`;
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                // Xử lý dữ liệu trả về, ví dụ cập nhật danh sách sách trên trang
+                updateBookList(data.books);
+
+                // Cập nhật phân trang
+                updatePagination(data.totalPages, authorname, page);
+
+                // Cập nhật đường dẫn mà không load lại trang
+                const newUrl = `/book/filterAuthor/${authorname}/page=${page}`;
+                history.pushState({ page: page, authorname: authorname }, '', newUrl);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function categoryType(name, page = 1) {
+        console.log("categoryType: " + name + " " + page);
+        const url = `/category/ajax/${name}/page=${page}`;
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                // Xử lý dữ liệu trả về, ví dụ cập nhật danh sách sách trên trang
+                updateBookList(data.books);
+
+                // Cập nhật phân trang
+                updatePagination(data.totalPages, name, page);
+
+                // Cập nhật đường dẫn mà không load lại trang
+                const newUrl = `/category/${name}/page=${page}`;
+                history.pushState({ page: page, name: name }, '', newUrl);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function updateBookList(books) {
+        const bookListContainer = document.getElementById('bookListContainer');
+
+        // Xóa tất cả các phần tử con trong container
+        while (bookListContainer.firstChild) {
+            bookListContainer.removeChild(bookListContainer.firstChild);
+        }
+
+        // Thêm sách mới vào container
+        books.forEach(book => {
+            const card = document.createElement('div');
+            card.className = 'col-4 mb-4';
+            card.innerHTML = `
+                <div class="card h-100" style="width: 14rem; margin-right: 12px;">
+                    <div class="container" style="width: 100%; height: 200px; background-color: #f5f5f5; align-items: center; justify-content: center;">
+                        <a href="/book/${book.id}/view">
+                            <img src="/${book.image}" class="card-img-top" alt="${book.name}" style="width: 100%; height: 100%; object-fit: contain;">
+                        </a>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title"><a style="color: #000000;" href="/book/${book.id}/view">${book.name}</a></h5>
+                        <h6 class="card-title" style="color: #000000;">${book.author}</h6>
+                        <div class="d-flex justify-content-between mt-auto">
+                            <a class="card-text pointer" style="color: #000000;">${book.sold} sold</a>
+                            <a class="card-text font-weight-bold" style="color: #000000;">${book.price}</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+            bookListContainer.appendChild(card);
+        });
+    }
+
+    function updatePaginationPrice(totalPages, cateName, currentPage) {
+        const paginationContainer = document.querySelector('.pagination');
+        const pageNumbers = generatePageNumbers(currentPage, totalPages);
+
+        // Xóa tất cả các phần tử con trong container
+        while (paginationContainer.firstChild) {
+            paginationContainer.removeChild(paginationContainer.firstChild);
+        }
+
+        // Thêm nút "Previous"
+        const prevLi = document.createElement('li');
+        prevLi.className = 'page-item';
+        const prevLink = document.createElement('a');
+        prevLink.className = 'page-link custom-pagination-background custom-page-number';
+        prevLink.href = `javascript:void(0);`;
+        prevLink.textContent = '«';
+        const prePage = subtractOne(currentPage)
+        prevLink.onclick = () => priceRangeFunc(cateName, prePage);
+        prevLi.appendChild(prevLink);
+        paginationContainer.appendChild(prevLi);
+
+        // Thêm các nút phân trang mới vào container
+        for (let i = 0; i < pageNumbers.length; i++) {
+            if (pageNumbers[i] === 0){
+                const li = document.createElement('a');
+                li.className = 'custom-pagination-background custom-page-number';
+                
+                const link = document.createElement('span');
+                link.className = 'mr-2 ml-2';
+                link.textContent = '...';
+                link.style.color = 'black';
+
+                li.appendChild(link);
+                paginationContainer.appendChild(li);
+            } else {
+                const li = document.createElement('li');
+                li.className = 'page-item';
+
+                const link = document.createElement('a');
+                link.className = 'page-link custom-pagination-background custom-page-number';
+                link.href = `javascript:void(0);`;
+                link.textContent = pageNumbers[i];
+                link.onclick = () => priceRangeFunc(cateName, pageNumbers[i]);
+
+                li.appendChild(link);
+                paginationContainer.appendChild(li);
+            }
+        }
+
+        // Thêm nút "Next"
+        const nextLi = document.createElement('li');
+        nextLi.className = 'page-item';
+        const nextLink = document.createElement('a');
+        nextLink.className = 'page-link custom-pagination-background custom-page-number';
+        nextLink.href = `javascript:void(0);`;
+        nextLink.textContent = '»';
+        nextLink.onclick = () => priceRangeFunc(cateName, addinOne(currentPage, totalPages));
+        nextLi.appendChild(nextLink);
+        paginationContainer.appendChild(nextLi);
+    }
+
+    function updatePagination(totalPages, cateName, currentPage) {
+        const paginationContainer = document.querySelector('.pagination');
+        const pageNumbers = generatePageNumbers(currentPage, totalPages);
+
+        // Xóa tất cả các phần tử con trong container
+        while (paginationContainer.firstChild) {
+            paginationContainer.removeChild(paginationContainer.firstChild);
+        }
+
+        // Thêm nút "Previous"
+        const prevLi = document.createElement('li');
+        prevLi.className = 'page-item';
+        const prevLink = document.createElement('a');
+        prevLink.className = 'page-link custom-pagination-background custom-page-number';
+        prevLink.href = `javascript:void(0);`;
+        prevLink.textContent = '«';
+        const prePage = subtractOne(currentPage)
+        prevLink.onclick = () => categoryType(cateName, prePage);
+        prevLi.appendChild(prevLink);
+        paginationContainer.appendChild(prevLi);
+
+        // Thêm các nút phân trang mới vào container
+        for (let i = 0; i < pageNumbers.length; i++) {
+            if (pageNumbers[i] === 0){
+                const li = document.createElement('a');
+                li.className = 'custom-pagination-background custom-page-number';
+                
+                const link = document.createElement('span');
+                link.className = 'mr-2 ml-2';
+                link.textContent = '...';
+                link.style.color = 'black';
+
+                li.appendChild(link);
+                paginationContainer.appendChild(li);
+            } else {
+                const li = document.createElement('li');
+                li.className = 'page-item';
+
+                const link = document.createElement('a');
+                link.className = 'page-link custom-pagination-background custom-page-number';
+                link.href = `javascript:void(0);`;
+                link.textContent = pageNumbers[i];
+                link.onclick = () => categoryType(cateName, pageNumbers[i]);
+
+                li.appendChild(link);
+                paginationContainer.appendChild(li);
+            }
+        }
+
+        // Thêm nút "Next"
+        const nextLi = document.createElement('li');
+        nextLi.className = 'page-item';
+        const nextLink = document.createElement('a');
+        nextLink.className = 'page-link custom-pagination-background custom-page-number';
+        nextLink.href = `javascript:void(0);`;
+        nextLink.textContent = '»';
+        nextLink.onclick = () => categoryType(cateName, addinOne(currentPage, totalPages));
+        nextLi.appendChild(nextLink);
+        paginationContainer.appendChild(nextLi);
+    }
+
+
+    function generatePageNumbers(currentPage, totalPages) {
+        const pageNumbers = [];
+        if (totalPages <= 5){
+            for (let i = 1; i <= totalPages; i++) {
+                pageNumbers.push(i);
+            }
+        } else {
+            if (currentPage <= 3){
+                for (let i = 1; i <= 4; i++) {
+                    pageNumbers.push(i);
+                }
+                pageNumbers.push(0);
+                pageNumbers.push(totalPages);
+            } else if (currentPage >= totalPages - 2) {
+                pageNumbers.push(1);
+                pageNumbers.push(0);
+                for (let i = totalPages - 3; i <= totalPages; i++) {
+                    pageNumbers.push(i);
+                }
+            } else {
+                pageNumbers.push(1);
+                pageNumbers.push(0);
+                for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+                    pageNumbers.push(i);
+                }
+                pageNumbers.push(0);
+                pageNumbers.push(totalPages);
+            }
+        }
+        return pageNumbers;
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.page-link').forEach(link => {
+            link.addEventListener('click', function (event) {
+                event.preventDefault();
+                const page = this.textContent.trim();
+                categoryType('{{cateName}}', page);
+            });
+        });
+    });
+
+    function subtractOne(currentPage) {
+        if (currentPage === 1) {
+            return currentPage;
+        }
+        return currentPage - 1;
+    }
+
+    function addinOne(currentPage, totalPages) {
+        if (currentPage === totalPages) {
+            return currentPage;
+        }
+        return currentPage + 1;
+    }
+
+</script>

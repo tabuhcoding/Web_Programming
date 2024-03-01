@@ -1,0 +1,454 @@
+.category-bg {
+    background-color: #F8F1E8; /* Màu nền mong muốn cho category */
+}
+.app__body{
+    min-height: 100vh;
+}
+.highlight {
+    background-color: #deab8f; /* Màu highlight bạn muốn sử dụng */
+}
+
+.roboto-font-size-18 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px; 
+}
+
+.black-hr {
+    border-top: 1px solid #000000;
+}
+
+.pointer{
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.custom-pagination-background {
+    background-color: #FAE6D4; 
+}
+
+.custom-page-number {
+    color: #000000; 
+    font-weight: bold;
+    margin: 0 5px;
+}
+
+.footer-background {
+    background-color: #FAE6D4; 
+}
+
+.font-footer {
+    font-family: 'Hannari', sans-serif; 
+    font-size: 2em; 
+    margin-left: 10px;
+}
+
+.font-footer2 {
+    font-family: 'Hannari', sans-serif; 
+    font-size: 1em;
+    color: #897272;
+}
+
+.footer-height {
+    height: 200px;
+}
+
+.smart-text, .book-text {
+    white-space: nowrap; /* Viết liền */
+}
+
+.smart-text {
+    color: #000000; /* Màu chữ đen cho phần "Smart" */
+}
+
+.book-text {
+    color: #585353; /* Màu chữ cho phần "Book" */
+}
+
+
+.search__bar {
+    border-radius: 10px;
+    width: 500px;
+  }
+
+
+  .no-border {
+    border: none;
+  }
+
+  .no-border {
+    border: none;
+    box-shadow: none;
+  }
+  
+  /* Màu khi hover */
+  .btn-outline-success:hover {
+    color: #fff; /* Màu chữ khi hover */
+    background-color: #eaeaea00; /* Màu nền khi hover */
+  }
+  .btn-signin{
+    background-color: #d1ae6d;
+    width: 30;
+    height: 30;
+    color: #fff;
+    border-radius: 10px;
+  }
+
+.nav-item{
+    color:#000000;
+    font-weight: 400;
+    font-size: 18px;
+    margin-left: 10px;
+}
+
+.carousel-control-prev, .carousel-control-next {
+    color: #000; /* Set the color to black */
+  }
+
+  .book-item {
+    width: 16rem;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Thêm shadow */
+    margin-bottom: 16px; /* Thêm khoảng cách giữa các phần tử */
+  }
+
+
+/* Book detail */
+
+.product-detail {
+    max-width: 100%;
+    margin: 50px auto;
+    background-color: #fae6d47d;
+    padding: 30px;
+    border-radius: 2px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.product-detail img {
+    max-width:350px;
+    height:350px;
+}
+
+.product-info {
+    margin-top: 20px;
+}
+
+.btn-add-to-cart{
+    margin-right: 20px;
+    
+}
+.product-info h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.product-info p {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.product-info .btn {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+}
+
+
+/*Cart Page*/
+.title-font{
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px; 
+    font-weight: 540;
+}
+
+.checkout-font{
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px; 
+}
+
+.checkout-font2{
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px; 
+    font-weight: 550;
+}
+
+.namebook-font{
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px; 
+    font-weight: 550;
+}
+
+.line{    
+    height: 0.5px; 
+    background-color: #000; 
+}
+
+.custom-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 200px; /* Chiều cao cố định của hàng */
+}
+.custom-row-cp {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.custom-checkbox {
+    width: 1.4rem; 
+    height: 1.4rem; 
+}
+.custom-radio {
+  width: 1.4rem; 
+  height: 1.4rem; 
+}
+.card-total{
+    width: 24rem; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-list{
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-input-group {
+    max-width: 140px;
+}
+
+.btn-cart{
+    background-color: #DEAB8F; 
+    color: white;
+}
+
+.voucher{
+    height: 50px;
+}
+
+.custom-input {
+    font-size: 16px; /* Đặt kích thước chữ */
+    color: #333; /* Đặt màu chữ */
+    border: 2px solid #6c757d; /* Đặt màu viền */
+    border-radius: 8px; /* Bo tròn góc */
+}
+
+.custom-input:focus {
+    box-shadow: 0 0 0 0.2rem rgba(108, 117, 125, 0.25); /* Hiệu ứng khi input được focus */
+}
+
+.namebook {
+    width: 200px; /* Đặt chiều rộng mong muốn, bạn có thể thay đổi giá trị này */
+    min-width: 200px; /* Chiều rộng tối thiểu */
+    max-width: 200px; /* Chiều rộng tối đa */
+    overflow: hidden; /* Ẩn phần vượt quá chiều rộng */
+    
+    text-overflow: ellipsis; /* Hiển thị dấu elipsis (...) khi văn bản quá dài */
+}
+
+/*Profile*/
+.profile-title {
+    font-family: 'Roboto', sans-serif;
+    font-size: 24px; 
+    font-weight: 540;
+    text-align: center;
+}
+
+.btn-upload{
+    background-color: #DEAB8F; 
+    color: white;
+    width: 200px;
+    border-radius: 15px;
+}
+
+.name-profile{
+    font-weight: 550;
+}
+
+.title-profile{
+    font-weight: 550;
+    color: #555555;
+}
+
+.navbar {
+    overflow: hidden;
+  }
+  
+  .dropdown-menu {
+    position: static; /* Hoặc sử dụng position: absolute; nếu cần */
+    float: none; /* Không sử dụng float */
+    margin-top: 0; /* Đặt margin-top thành 0 để tránh tăng kích thước */
+  }
+
+.gsi-material-button {
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -webkit-appearance: none;
+    background-color: WHITE;
+    background-image: none;
+    border: 1px solid #747775;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    color: #1f1f1f;
+    cursor: pointer;
+    font-family: 'Roboto', arial, sans-serif;
+    font-size: 14px;
+    height: 40px;
+    letter-spacing: 0.25px;
+    outline: none;
+    overflow: hidden;
+    padding: 0 12px;
+    position: relative;
+    text-align: center;
+    -webkit-transition: background-color .218s, border-color .218s, box-shadow .218s;
+    transition: background-color .218s, border-color .218s, box-shadow .218s;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: auto;
+    max-width: 400px;
+    min-width: min-content;
+  }
+  
+  .gsi-material-button .gsi-material-button-icon {
+    height: 20px;
+    margin-right: 12px;
+    min-width: 20px;
+    width: 20px;
+  }
+  
+  .gsi-material-button .gsi-material-button-content-wrapper {
+    -webkit-align-items: center;
+    align-items: center;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    height: 100%;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+  }
+  
+  .gsi-material-button .gsi-material-button-contents {
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    font-family: 'Roboto', arial, sans-serif;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+  }
+  
+  .gsi-material-button .gsi-material-button-state {
+    -webkit-transition: opacity .218s;
+    transition: opacity .218s;
+    bottom: 0;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  
+  .gsi-material-button:disabled {
+    cursor: default;
+    background-color: #ffffff61;
+    border-color: #1f1f1f1f;
+  }
+  
+  .gsi-material-button:disabled .gsi-material-button-contents {
+    opacity: 38%;
+  }
+  
+  .gsi-material-button:disabled .gsi-material-button-icon {
+    opacity: 38%;
+  }
+  
+  .gsi-material-button:not(:disabled):active .gsi-material-button-state, 
+  .gsi-material-button:not(:disabled):focus .gsi-material-button-state {
+    background-color: #303030;
+    opacity: 12%;
+  }
+  
+  .gsi-material-button:not(:disabled):hover {
+    -webkit-box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .30), 0 1px 3px 1px rgba(60, 64, 67, .15);
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .30), 0 1px 3px 1px rgba(60, 64, 67, .15);
+  }
+  
+  .gsi-material-button:not(:disabled):hover .gsi-material-button-state {
+    background-color: #303030;
+    opacity: 8%;
+  }
+
+  /*Order History*/
+  .ordersum-font {
+    font-family: 'Roboto', sans-serif;
+    font-size: 22px; 
+    font-weight: bold;
+}
+
+.backgound-summary{
+    background-color: #f0f0f0;
+    padding: 10px;
+}
+
+.card-order-history{
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 900px;
+}
+
+.summary-text1{
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px; 
+}
+
+.summary-text2{
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px; 
+    font-weight: bold;
+}
+
+.feedback {
+    height: auto; }
+    .feedback-side-bar {
+      box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; }
+    .feedback-wrapper {
+      border-radius: 12px;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; }
+    .feedback-list {
+      list-style-type: none; }
+    .feedback-item {
+      border-radius: 4px;
+      box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px; }
+    .feedback-date {
+      font-size: 12px;
+      font-weight: 600;
+      color: #7d7c7c; }
+    .feedback-img {
+      width: 120px;
+      height: 120px; }
+
+
+/* Dark mode */
+.dark-mode {
+  background-color: #222;
+  color: #fff;
+}
+
+.dark-mode .navbar-light {
+  background-color: #333 !important;
+}
+
+.dark-mode .navbar-light .navbar-nav .nav-link {
+  color: #fff !important;
+}
+
+
+  
+  
+  
+
+  
+
